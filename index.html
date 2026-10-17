@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гостиная Пуффендуя | Хогвартс WoM</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Marcellus&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hufflepuff: { main: '#ECB939', dark: '#1f190d', accent: '#372E29' },
+                        gold: '#D4AF37'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        body: ['Marcellus', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0d0c0a;
+            color: #e5c158;
+            font-family: 'Marcellus', serif;
+            /* Попытка загрузить локальное фото, либо красивый встроенный атмосферный градиент гостиной */
+            background-image: 
+                linear-gradient(rgba(13, 12, 10, 0.75), rgba(13, 12, 10, 0.88)), 
+                url('пуффендуй гостиная.jpg'),
+                radial-gradient(circle at 50% 30%, #4a3810 0%, #17120a 70%);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        .huffle-card {
+            background: rgba(28, 22, 14, 0.88);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.7);
+        }
+    </style>
+</head>
+<body class="p-3 sm:p-8 flex flex-col items-center justify-center min-h-screen">
+
+    <!-- HEADER -->
+    <header class="text-center mb-6">
+        <div class="inline-flex items-center gap-3 mb-1">
+            <i class="fa-solid fa-shield-cat text-gold text-2xl sm:text-3xl"></i>
+            <h1 class="font-cinzel text-3xl sm:text-5xl font-bold text-gold tracking-widest uppercase drop-shadow-md">Гостиная Пуффендуя</h1>
+            <i class="fa-solid fa-shield-cat text-gold text-2xl sm:text-3xl"></i>
+        </div>
+        <p class="text-xs sm:text-sm text-yellow-200/70 font-cinzel tracking-wider">Школа Чародейства и Волшебства • Хогвартс WoM</p>
+    </header>
+
+    <div class="w-full max-w-4xl space-y-6">
+
+        <!-- REGISTRATION / SETUP SCREEN -->
+        <div id="setupSection" class="huffle-card rounded-2xl p-6 sm:p-8">
+            <div class="text-center mb-6">
+                <h2 class="font-cinzel text-2xl sm:text-3xl text-gold font-bold mb-1">Добро пожаловать в Домик Барсуков</h2>
+                <p class="text-xs text-yellow-200/60">Представьтесь, чтобы войти в уютную гостиную</p>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); enterCommonRoom();" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase font-cinzel text-gold mb-1.5 font-bold">РП ФИО Персонажа</label>
+                        <input type="text" id="regFio" required placeholder="Например: Пенелопа Спраут" class="w-full p-3 bg-black/60 border border-yellow-600/40 rounded-xl text-white placeholder-gray-500 focus:border-gold outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-cinzel text-gold mb-1.5 font-bold">Роль</label>
+                        <select id="regRole" onchange="toggleRoleFields()" class="w-full p-3 bg-black/60 border border-yellow-600/40 rounded-xl text-white focus:border-gold outline-none transition cursor-pointer">
+                            <option value="Студент">Студент</option>
+                            <option value="Зам. старосты">Зам. старосты 🛡️</option>
+                            <option value="Староста">Староста 👑</option>
+                            <option value="Декан">Декан ⚜️</option>
+                        </select>
+                    </div>
+                    <div id="courseGroup" class="sm:col-span-2">
+                        <label class="block text-xs uppercase font-cinzel text-gold mb-1.5 font-bold">Курс</label>
+                        <select id="regCourse" class="w-full p-3 bg-black/60 border border-yellow-600/40 rounded-xl text-white focus:border-gold outline-none transition cursor-pointer">
+                            <option value="1 Курс">1 Курс</option>
+                            <option value="2 Курс">2 Курс</option>
+                            <option value="3 Курс">3 Курс</option>
+                            <option value="4 Курс">4 Курс</option>
+                            <option value="5 Курс">5 Курс</option>
+                            <option value="6 Курс">6 Курс</option>
+                            <option value="7 Курс">7 Курс</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-6 py-3.5 bg-gradient-to-r from-yellow-600 via-gold to-yellow-500 text-black font-cinzel font-bold text-lg rounded-xl hover:brightness-110 active:scale-[0.99] transition shadow-lg flex items-center justify-center gap-2">
+                    <span>Войти в Гостиную</span>
+                    <i class="fa-solid fa-key"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- MAIN ROOM INTERFACE (CHAT & PORTALS) -->
+        <div id="roomSection" class="hidden space-y-6">
+            
+            <!-- TOP INFO & PORTAL BUTTON -->
+            <div class="huffle-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3.5 w-full sm:w-auto">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gold to-yellow-700 border-2 border-gold flex items-center justify-center text-black font-bold font-cinzel text-xl shadow" id="userInitial">
+                        Н
+                    </div>
+                    <div>
+                        <h3 id="profileName" class="font-cinzel text-lg font-bold text-white leading-snug">--</h3>
+                        <p id="profileBadge" class="text-xs text-gold flex items-center gap-1 font-body">--</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button onclick="logoutPerson()" title="Сменить персонажа" class="px-3.5 py-2.5 bg-black/40 text-yellow-300/80 hover:text-white border border-yellow-600/30 hover:border-gold rounded-xl transition text-xs font-cinzel flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <span class="hidden sm:inline">Сменить</span>
+                    </button>
+                    <button onclick="showModal('portalModal')" class="flex-1 sm:flex-none px-5 py-2.5 bg-gradient-to-r from-gold to-yellow-600 text-black font-cinzel font-bold rounded-xl hover:brightness-110 transition shadow flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-compass"></i>
+                        <span>Порталы / Выход</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- LIVE CHAT BOX -->
+            <div class="huffle-card rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col h-[480px]">
+                <div class="flex items-center justify-between mb-3 border-b border-yellow-600/20 pb-3">
+                    <h3 class="font-cinzel text-lg sm:text-xl text-gold font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-yellow-500"></i> Уютный Чат Гостиной
+                    </h3>
+                    <span class="text-[10px] uppercase tracking-wider px-2 py-1 bg-yellow-900/40 border border-yellow-600/30 text-gold rounded-md">Онлайн сессия</span>
+                </div>
+                
+                <!-- Messages List -->
+                <div id="chatMessages" class="flex-1 overflow-y-auto space-y-3 pr-2 bg-black/50 rounded-xl p-3 sm:p-4 border border-yellow-600/20 mb-4">
+                    <!-- Messages render here -->
+                </div>
+
+                <!-- Input Field -->
+                <form onsubmit="event.preventDefault(); sendChatMessage();" class="flex gap-2">
+                    <input type="text" id="chatInput" placeholder="Написать сообщение сокурсникам..." class="flex-1 p-3 bg-black/60 border border-yellow-600/40 rounded-xl text-white text-sm focus:border-gold outline-none transition placeholder-gray-500">
+                    <button type="submit" class="px-5 sm:px-7 py-3 bg-gold text-black font-cinzel font-bold rounded-xl hover:brightness-110 active:scale-95 transition flex items-center gap-2 text-sm">
+                        <span class="hidden sm:inline">Отправить</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL: PORTALS / LOCATIONS -->
+    <div id="portalModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 z-50 transition-opacity">
+        <div class="huffle-card rounded-2xl max-w-lg w-full p-6 relative max-h-[85vh] flex flex-col">
+            <button onclick="hideModal('portalModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="text-center mb-4">
+                <h3 class="font-cinzel text-2xl text-gold font-bold">Карта Кабинетов</h3>
+                <p class="text-xs text-yellow-200/60 mt-1">Переход в локации и группы Хогвартса WoM</p>
+            </div>
+            
+            <div class="space-y-2 overflow-y-auto pr-1 text-sm font-cinzel">
+                <a href="https://vk.ru/hogwarts_wom" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-castle text-yellow-500"></i> Локации Хогвартса</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club195728967" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-broom text-yellow-500"></i> Полёты на Метле</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club198896988" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-wand-magic-sparkles text-yellow-500"></i> Трансфигурация</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club198897015" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-flask text-yellow-500"></i> Зельеварение</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/charms_wom" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-book-sparkles text-yellow-500"></i> Заклинания</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club195729144" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-yellow-500"></i> ЗоТИ</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club198894836" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-landmark text-yellow-500"></i> История Магии</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club195729150" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-seedling text-yellow-500"></i> Травология</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/ancientrunes_wom" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-gem text-yellow-500"></i> Древние Руны</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club198896968" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-paw text-yellow-500"></i> УзМС</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club198896932" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-calculator text-yellow-500"></i> Нумерология</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+                <a href="https://vk.ru/club198894872" target="_blank" class="p-3 bg-black/50 hover:bg-gold/20 border border-yellow-600/30 rounded-xl text-gold flex items-center justify-between transition group">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-eye text-yellow-500"></i> Прорицания</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-60 group-hover:opacity-100"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        let currentUser = null;
+
+        // ПРОВЕРКА СОХРАНЕНИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('huffle_user_v2');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    if (currentUser && currentUser.fio) {
+                        showRoomUI();
+                    }
+                } catch(e) {
+                    localStorage.removeItem('huffle_user_v2');
+                }
+            }
+            toggleRoleFields();
+        });
+
+        // Скрывать или показывать выбор курса в зависимости от роли
+        function toggleRoleFields() {
+            const role = document.getElementById('regRole').value;
+            const courseGroup = document.getElementById('courseGroup');
+            if (role === 'Декан') {
+                courseGroup.classList.add('hidden');
+            } else {
+                courseGroup.classList.remove('hidden');
+            }
+        }
+
+        // Вход в гостиную
+        function enterCommonRoom() {
+            const fioInput = document.getElementById('regFio');
+            const fio = fioInput.value.trim();
+            if (!fio) return;
+
+            const role = document.getElementById('regRole').value;
+            const courseSelect = document.getElementById('regCourse');
+            
+            let badgeText = '';
+            
+            // Логика ролей и курс
+            if (role === 'Декан') {
+                badgeText = '⚜️ Декан факультета';
+            } else if (role === 'Староста') {
+                badgeText = `👑 Староста • ${courseSelect.value}`;
+            } else if (role === 'Зам. старосты') {
+                badgeText = `🛡️ Зам. старосты • ${courseSelect.value}`;
+            } else {
+                badgeText = `Студент • ${courseSelect.value}`;
+            }
+
+            currentUser = { 
+                fio: fio, 
+                role: role, 
+                badge: badgeText 
+            };
+
+            // Сохраняем пользователя в локальное хранилище
+            localStorage.setItem('huffle_user_v2', JSON.stringify(currentUser));
+
+            showRoomUI();
+        }
+
+        // Отображение интерфейса гостиной
+        function showRoomUI() {
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('roomSection').classList.remove('hidden');
+
+            document.getElementById('profileName').textContent = currentUser.fio;
+            document.getElementById('profileBadge').textContent = currentUser.badge;
+            document.getElementById('userInitial').textContent = currentUser.fio.charAt(0).toUpperCase();
+
+            loadChatHistory();
+        }
+
+        // Сменить персонажа
+        function logoutPerson() {
+            localStorage.removeItem('huffle_user_v2');
+            currentUser = null;
+            document.getElementById('roomSection').classList.add('hidden');
+            document.getElementById('setupSection').classList.remove('hidden');
+            document.getElementById('regFio').value = '';
+        }
+
+        // Отправка сообщений
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text || !currentUser) return;
+
+            const msgData = {
+                id: Date.now(),
+                sender: currentUser.fio,
+                badge: currentUser.badge,
+                text: text,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            let messages = JSON.parse(localStorage.getItem('huffle_chat_v2') || '[]');
+            messages.push(msgData);
+            
+            // Ограничение истории чата до 50 сообщений
+            if (messages.length > 50) messages = messages.slice(-50);
+            
+            localStorage.setItem('huffle_chat_v2', JSON.stringify(messages));
+
+            input.value = '';
+            loadChatHistory();
+        }
+
+        // Загрузка и рендеринг истории чата
+        function loadChatHistory() {
+            const chatContainer = document.getElementById('chatMessages');
+            let messages = JSON.parse(localStorage.getItem('huffle_chat_v2') || '[]');
+            
+            if (messages.length === 0) {
+                chatContainer.innerHTML = `
+                    <div class="text-xs text-center text-yellow-300/40 font-cinzel py-8">
+                        — В гостиной пока тихо. Будьте первым, кто поздоровается! —
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="text-[11px] text-center text-yellow-300/40 font-cinzel mb-2">— Разговоры у камина —</div>';
+            
+            messages.forEach(m => {
+                const isMe = currentUser && m.sender === currentUser.fio;
+                html += `
+                    <div class="bg-black/60 p-3 rounded-xl border ${isMe ? 'border-yellow-500/40 bg-yellow-950/10' : 'border-yellow-600/15'} text-xs">
+                        <div class="flex justify-between items-center mb-1 gap-2">
+                            <span class="font-bold font-cinzel text-gold truncate">
+                                ${escapeHtml(m.sender)} 
+                                <span class="text-[10px] text-yellow-200/60 font-normal ml-1">(${escapeHtml(m.badge)})</span>
+                            </span>
+                            <span class="text-[10px] text-gray-400 whitespace-nowrap">${m.time}</span>
+                        </div>
+                        <p class="text-white/90 font-body leading-relaxed break-words">${escapeHtml(m.text)}</p>
+                    </div>
+                `;
+            });
+
+            chatContainer.innerHTML = html;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Модальное окно порталов
+        function showModal(id) { 
+            document.getElementById(id).classList.remove('hidden'); 
+        }
+        function hideModal(id) { 
+            document.getElementById(id).classList.add('hidden'); 
+        }
+
+        // Автообновление сообщений каждые 2 секунды
+        setInterval(() => {
+            if (currentUser) {
+                loadChatHistory();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
